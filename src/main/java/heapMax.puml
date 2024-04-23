@@ -1,0 +1,11 @@
+@startuml
+note right of MaxHeapBuilder
+Step 1: Initial Array: [5, 13, 2, 25, 7, 17, 20, 8, 4]
+Step 2: After maxHeapify(1): [5, 13, 2, 25, 7, 17, 20, 8, 4]
+Step 3: After maxHeapify(2): [5, 13, 2, 25, 7, 17, 20, 8, 4]
+Step 4: After maxHeapify(3): [5, 13, 20, 25, 7, 17, 2, 8, 4]
+Step 5: After maxHeapify(4): [5, 25, 20, 13, 7, 17, 2, 8, 4]
+Step 6: After maxHeapify(5): [25, 13, 20, 8, 7, 17, 2, 5, 4]
+Step 7: After maxHeapify(6): [25, 13, 20, 8, 7, 17, 2, 5, 4]
+end note
+@enduml

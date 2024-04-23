@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Site</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-secondary">
+    <div class="container">
+        <a class="navbar-brand" href="#">CS for All</a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <form>
+        <div class="input-group">
+            <input type="text" class="form-control" id="array" placeholder="Enter the array separated by commas">
+            <button type="button" class="btn btn-primary" onclick="fetchingData()">Process</button>
+        </div>
+    </form>
+</div>
+
+<div class="container mt-5">
+    <button class="btn btn-primary" onclick="receiveHeapsortSteps()">Get Heap Sort Steps</button>
+</div>
+
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-header">
+            Building MaxHeap
+        </div>
+        <div class="card-body" id="outputId">
+            <!-- Heap sort steps will be displayed here -->
+        </div>
+    </div>
+</div>
+
+
+<div class="container mt-10">
+    <div class="card">
+        <div class="card-header">
+            Building MaxHeap UML
+        </div>
+        <div class="card-body" >
+            <img src="/heapMax.png" alt="Image Not found">
+            <!-- Heap sort steps will be displayed here -->
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function fetchingData(){
+        var arrayInput = document.getElementById("array").value;
+        var array = arrayInput.split(",");
+
+        const JsonArray = JSON.stringify(array);
+        fetch('/ArrayReceiver',
+            {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JsonArray
+            }).then(response =>
+        {
+            if(!response.ok){
+                throw new Error(response.statusText);
+            }
+            return response.json();
+        }).catch(error => console.log(error));
+    }
+
+    function receiveHeapsortSteps() {
+        fetch('/heapsort/steps')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch heapsort steps');
+                }
+                return response.json();
+            })
+            .then(steps => {
+                // Assuming 'steps' is an array of arrays, each representing a step of the heapsort process
+                console.log('Heapsort steps:', steps);
+                // Get the output container element
+                const outputContainer = document.getElementById("outputId");
+
+                // Clear previous content
+                outputContainer.innerHTML = '';
+
+                // Iterate through each array in steps and display its elements
+                steps.forEach((array, index) => {
+                    const arrayDiv = document.createElement('div');
+                    arrayDiv.innerHTML = `Step ${index + 1}:  |   ${array.join(', ')}`;
+                    outputContainer.appendChild(arrayDiv);
+                });
+                // Process the steps as needed
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+</script>
+</body>
+</html>
